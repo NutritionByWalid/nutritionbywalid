@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition by Walid</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --emerald: #1A6B4A;
+    --emerald-dark: #0F4A32;
+    --emerald-deep: #0A3328;
+    --gold: #C9A84C;
+    --gold-light: #E8C46A;
+    --white: #FFFFFF;
+    --off-white: #F4F9F6;
+    --text-muted: #8aab98;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--emerald-deep);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Animated background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        rgba(26,107,74,0.18) 28px,
+        rgba(26,107,74,0.18) 29px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Gold top bar */
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+    z-index: 100;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 56px 20px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .avatar {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+    border: 2.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    box-shadow: 0 0 0 6px rgba(201,168,76,0.12);
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .brand-name span {
+    color: var(--gold);
+  }
+
+  .credentials {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .bio {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* Gold divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 24px;
+    animation: fadeUp 0.7s ease both;
+  }
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.3);
+  }
+  .divider-text {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* Product cards */
+  .products {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .product-card {
+    background: rgba(26,107,74,0.18);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gold);
+    border-radius: 14px 0 0 14px;
+  }
+
+  .product-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    border-radius: 14px;
+  }
+
+  .product-card:hover {
+    border-color: rgba(201,168,76,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,168,76,0.15);
+  }
+
+  .product-card:hover::after { opacity: 1; }
+
+  .product-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--emerald), var(--emerald-dark));
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .product-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .product-tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+
+  .product-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .product-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .product-price {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .arrow {
+    color: var(--gold);
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  .product-card:hover .arrow { transform: translateX(3px); }
+
+  /* Animation delays for cards */
+  .product-card:nth-child(1) { animation-delay: 0.1s; }
+  .product-card:nth-child(2) { animation-delay: 0.2s; }
+  .product-card:nth-child(3) { animation-delay: 0.3s; }
+  .product-card:nth-child(4) { animation-delay: 0.4s; }
+
+  /* Instagram link */
+  .social-section {
+    text-align: center;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .ig-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .ig-link:hover {
+    background: rgba(201,168,76,0.18);
+    border-color: var(--gold);
+  }
+  .ig-icon {
+    font-size: 16px;
+  }
+
+  .footer-text {
+    margin-top: 28px;
+    font-size: 11px;
+    color: rgba(138,171,152,0.5);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .header { animation-delay: 0s; }
+  .divider { animation-delay: 0.05s; }
+</style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="avatar">W</div>
+    <div class="brand-name">Nutrition <span>by Walid</span></div>
+    <div class="credentials">BSc Human Nutrition</div>
+    <p class="bio">Science-backed nutrition guides for real people. Muscle building, fat loss, hormones &amp; more.</p>
+  </div>
+
+  <!-- Divider -->
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">My Guides</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Product Cards -->
+  <div class="products">
+
+    <a class="product-card" href="https://walidnutrition.gumroad.com/l/sfzign" target="_blank" rel="noopener">
+      <div class="product-icon">💪</div>
+      <div class="product-info">
+        <div class="product-tag">Muscle Building</div>
+        <div class="product-title">Feed the Muscle</div>
+        <div class="product-desc">Beginner nutrition guide for building lean muscle after 35</div>
+      </div>
+      <div class="product-price">€25</div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a class="product-card" href="https://walidnutrition.gumroad.com/l/ddkefq" target="_blank" rel="noopener">
+      <div class="product-icon">🥩</div>
+      <div class="product-info">
+        <div class="product-tag">Nutrition</div>
+        <div class="product-title">Protein: The Complete Guide</div>
+        <div class="product-desc">Everything you need to know about protein and muscle building</div>
+      </div>
+      <div class="product-price">€25</div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a class="product-card" href="https://walidnutrition.gumroad.com/l/qtoilg" target="_blank" rel="noopener">
+      <div class="product-icon">🔬</div>
+      <div class="product-info">
+        <div class="product-tag">Supplements</div>
+        <div class="product-title">Evidence Based Supplement Guide</div>
+        <div class="product-desc">What actually works, what doesn't — no marketing noise</div>
+      </div>
+      <div class="product-price">€25</div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a class="product-card" href="https://walidnutrition.gumroad.com/l/hwmzt" target="_blank" rel="noopener">
+      <div class="product-icon">🔥</div>
+      <div class="product-info">
+        <div class="product-tag">Fat Loss</div>
+        <div class="product-title">Fat Loss &amp; Muscle Retention Guide</div>
+        <div class="product-desc">Lose fat, keep your muscle — the smart nutrition approach</div>
+      </div>
+      <div class="product-price">€25</div>
+      <div class="arrow">→</div>
+    </a>
+
+  </div>
+
+  <!-- Consultations -->
+  <div class="divider" style="animation-delay:0.45s">
+    <div class="divider-line"></div>
+    <div class="divider-text">Work With Me</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="products" style="margin-bottom: 32px;">
+
+    <a class="product-card" href="https://walidnutrition.gumroad.com/l/bppcgd" target="_blank" rel="noopener">
+      <div class="product-icon">📅</div>
+      <div class="product-info">
+        <div class="product-tag">1:1 Consultation</div>
+        <div class="product-title">30-Minute Nutrition Session</div>
+        <div class="product-desc">Focused session — goal setting, diet review &amp; action plan</div>
+      </div>
+      <div class="product-price">€50</div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a class="product-card" href="https://walidnutrition.gumroad.com/l/cmrkk" target="_blank" rel="noopener">
+      <div class="product-icon">📅</div>
+      <div class="product-info">
+        <div class="product-tag">1:1 Consultation</div>
+        <div class="product-title">60-Minute Nutrition Session</div>
+        <div class="product-desc">Full assessment, personalised macros &amp; complete nutrition plan</div>
+      </div>
+      <div class="product-price">€100</div>
+      <div class="arrow">→</div>
+    </a>
+
+  </div>
+
+  <!-- Instagram -->
+  <div class="social-section">
+    <a class="ig-link" href="https://instagram.com/Walid_177" target="_blank" rel="noopener">
+      <span class="ig-icon">📸</span>
+      Follow on Instagram @Walid_177
+    </a>
+    <p class="footer-text">© Nutrition by Walid · All guides are for educational purposes</p>
+  </div>
+
+</div>
+</body>
+</html>
